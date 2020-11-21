@@ -1,0 +1,11 @@
+avenir
+nav active, demi
+nav, reg
+
+hero main, bold
+hero main2, reg
+hero sub, reg
+
+monster
+page number active, semi bold
+page number, extra light
