@@ -1,5 +1,6 @@
 import {useState, useEffect, useRef} from 'preact/hooks'
 import styled, {css} from 'styled-components';
+import Dialog from '@material-ui/core/Dialog';
 
 const Player = styled.div`
 	display: flex;
@@ -88,6 +89,7 @@ const PlayerFadeOutItem = styled.div`
 
 const PlayButton = styled.img.attrs(() => ({src: '/assets/icons/playbotton.svg'}))`
 	opacity: 0.25;
+	width: 25%;
 	z-index: 1;
 `
 
@@ -132,6 +134,7 @@ const PlayerContent = ({page, isReverse, shouldTrigger}) => (
 </PlayerItem>)
 
 const PlayerSection = ({hideNormal, hideReverse, page, shouldReverse, shouldTrigger, MAX_PAGE}) => {
+	const [modalOpen, handleModalOpen] = useState(false)
 	const mp4Player = useRef(null)
 
 	useEffect(()=>{
@@ -143,6 +146,12 @@ const PlayerSection = ({hideNormal, hideReverse, page, shouldReverse, shouldTrig
 		}
 		return () => clearTimeout(timer)
 	}, [hideNormal, hideReverse])
+
+	useEffect(() => {
+		if(mp4Player.current !== null) {
+			modalOpen ? mp4Player.current.pause() : mp4Player.current.play()
+		}
+	}, [modalOpen])
 
 	const handlePause = () => {
 		mp4Player.current.style.opacity = 0
@@ -171,12 +180,17 @@ const PlayerSection = ({hideNormal, hideReverse, page, shouldReverse, shouldTrig
             {
                 hideNormal && hideReverse && (
                     <Player isNormal={true}>
-                        <PlayerItem page={page} currentPage={page} onMouseOver={handlePause} onMouseLeave={handlePlay}>
+						<Dialog onClose={() => handleModalOpen(false)} aria-labelledby="simple-dialog-title" open={modalOpen}>
+							<video controls autoplay>
+								<source src={`/assets/gifs/page_${page}.mp4`} type="video/mp4"/>
+							</video>
+						</Dialog>
+						<PlayerItem page={page} currentPage={page} onMouseOver={handlePause} onMouseLeave={handlePlay}>
 							<PlayVideo isActivePlayer={true} page={page} ref={mp4Player}>
 								<source src={`/assets/gifs/page_${page}.mp4`} type="video/mp4" />
 							</PlayVideo>
 							<PlayItemBackground page={page} isActivePlayer={true}/>
-							<PlayButton />
+							<PlayButton onClick={() => handleModalOpen(true)}/>
 						</PlayerItem>
 						{page === MAX_PAGE ? null : (
 							<PlayerContent page={page + 1}/>
