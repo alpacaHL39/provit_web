@@ -23,7 +23,7 @@ const Slogan = styled.img.attrs(() => ({src: '/assets/about_us/slogan.png', "dat
     ${() => IS_DEV && css`border: green 1px solid;`}
 `
 
-const Paragraph = styled.img.attrs(() => ({src: '/assets/about_us/text2.png', "data-aos": "fade-up"}))`
+const Paragraph = styled.div.attrs(() => ({ "data-aos": "fade-up"}))`
     position: absolute;
     top: 52.5%;
     left: 15%;
@@ -70,7 +70,9 @@ const AboutUsSection = () => {
             <Main />
             <Dot />
             <Slogan />
-            <Paragraph />
+            <Paragraph>
+                <img src='/assets/about_us/text2.png' style={{objectFit: 'contain', width: "100%", height: "100%"}} />
+            </Paragraph>
             <HorizontalLine/>
             <VerticalLine />
         </>
