@@ -1,6 +1,7 @@
 import { h } from 'preact';
 import { useState, useEffect, useRef } from 'preact/hooks';
 import styled from 'styled-components'
+import DATA from '../assets/subLanding.json'
 
 // import components
 import NavSection from './nav'
@@ -12,8 +13,8 @@ import AboutUsSection from './features/about_us'
 import ContactUsSection from './features/contact_us'
 
 const IS_DEV = false
-const COLOR_CODE = ['#3CDCB5', '#FF8AE1', '#FFD764', '#B296CC','#006584']
-const MAX_PAGE = COLOR_CODE.length
+// const COLOR_CODE = ['#3CDCB5', '#FF8AE1', '#FFD764', '#B296CC','#006584']
+// const MAX_PAGE = COLOR_CODE.length
 
 const Main = styled.div`
 	display: flex;
@@ -30,7 +31,8 @@ const Landing = styled.div`
 	width: 100%;
 	height: 100vh;
 	overflow: hidden;
-	background-image: url('/assets/img/page_${props => props.page}.jpg');
+	background-image: url('/assets/landing_sub_page/${props => props.landingSubPage}/bg/page_${props => props.page}.jpg');
+	// background-image: url('/assets/img/page_${props => props.page}.jpg');
 	background-size: cover;
 	transition: background-image 0.3s ease-in-out;
 `
@@ -78,6 +80,11 @@ const App = () => {
 	const [shouldReverse, setShouldReverse] = useState(false)
 	const [hideNormal, setHideNormal] = useState(false)
 	const [hideReverse, setHideReverse] = useState(true)
+	const [landingSubPage, setLandingSubPage] = useState('commercial')
+	const CURRENT_DATA_INFO = DATA.data.filter(item => item.pageName === landingSubPage)[0].items
+	const MAX_PAGE = CURRENT_DATA_INFO.length
+	const COLOR_CODE = CURRENT_DATA_INFO.map(item => item.colorCode)
+	const SUB_PAGE_URL = CURRENT_DATA_INFO.map(item => item.youtubeUrl)
 
 	useEffect(() => {
 		hideNormal ? setShouldTrigger(false) : setShouldTrigger(true)
@@ -86,6 +93,10 @@ const App = () => {
 	useEffect(() => {
 		hideReverse ? setShouldReverse(false) : setShouldReverse(true)
 	}, [hideReverse])
+
+	useEffect(() => {
+		setPage(1)
+	}, [landingSubPage])
 
 	// page handle section
 	const [page, setPage] = useState(1)
@@ -130,15 +141,19 @@ const App = () => {
 		<SubNavSection scrollPosition={scrollPosition}/>
 		<Content>
 			{/* Landing Page Start */}
-			<Landing page={page} ref={domMapping.landingPage}>
+			<Landing page={page} ref={domMapping.landingPage} landingSubPage={landingSubPage}>
 				<Section>
-					<HeroTextSection {...{shouldReverse, shouldTrigger, hideReverse, hideNormal, page, setHideNormal, setHideReverse, MAX_PAGE}}/>
-					<PageNumberSection {...{shouldReverse, shouldTrigger, hideReverse, hideNormal, page, setHideNormal, setHideReverse, MAX_PAGE, IS_DEV, COLOR_CODE}} />
-					<Arrow>
-						<img src='/assets/icons/left_arrow.svg' onClick={() => {decrement(); setHideReverse(false)}} style={{height: '100%'}} />
-						<img src='/assets/icons/rifht_arrow.svg' onClick={() => {increment();setHideNormal(false)}} style={{height: '100%'}} />
-					</Arrow>
-					<PlayerSection {...{hideNormal, hideReverse,page, shouldTrigger, shouldReverse, MAX_PAGE}}/>
+					<HeroTextSection {...{shouldReverse, shouldTrigger, hideReverse, hideNormal, page, setHideNormal, setHideReverse, MAX_PAGE, landingSubPage}}/>
+					{MAX_PAGE > 1 && (
+						<>
+							<PageNumberSection {...{shouldReverse, shouldTrigger, hideReverse, hideNormal, page, setHideNormal, setHideReverse, MAX_PAGE, IS_DEV, COLOR_CODE}} />
+							<Arrow>
+								<img src='/assets/icons/left_arrow.svg' onClick={() => {decrement(); setHideReverse(false)}} style={{height: '100%'}} />
+								<img src='/assets/icons/rifht_arrow.svg' onClick={() => {increment();setHideNormal(false)}} style={{height: '100%'}} />
+							</Arrow>
+						</>
+					)}
+					<PlayerSection {...{hideNormal, hideReverse,page, shouldTrigger, shouldReverse, MAX_PAGE, landingSubPage, SUB_PAGE_URL}}/>
 				</Section>
 				<RightSideBar />
 			</Landing>
@@ -155,7 +170,7 @@ const App = () => {
 			{/* Contact Us End */}
 		</Content>
 		
-		<NavSection scrollToFunc={executeScroll} scrollPosition={scrollPosition} />
+		<NavSection scrollToFunc={executeScroll} scrollPosition={scrollPosition} setLandingSubPage={setLandingSubPage} landingSubPage={landingSubPage}/>
 	</Main>
 	</div>
 	)

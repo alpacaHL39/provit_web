@@ -51,27 +51,30 @@ const HeroTextReverseOut = styled.div`
 	${({ shouldTrigger }) => shouldTrigger && css`transform: translateX(40vw); opacity: 0;` }
 	transition: 1s;
 `
+// old way
+// const HERO_TEXT_PATH = (page) => `/assets/hero_text/page_${page}.png`
+const HERO_TEXT_PATH = ({page, landingSubPage}) => `/assets/landing_sub_page/${landingSubPage}/hero_text/page_${page}.png`
 
-const HeroTextSection = ({shouldTrigger, shouldReverse, hideNormal, hideReverse, page, setHideNormal, setHideReverse, MAX_PAGE}) => {
+const HeroTextSection = ({shouldTrigger, shouldReverse, hideNormal, hideReverse, page, setHideNormal, setHideReverse, MAX_PAGE, landingSubPage}) => {
     if(!hideNormal) return (
         <>
             {page === 1 ? null : (
-                <HeroTextNormalOut shouldTrigger={shouldTrigger} ><img src={`/assets/hero_text/page_${page-1}.png`} style={{height: '100%'}} /></HeroTextNormalOut>
+                <HeroTextNormalOut shouldTrigger={shouldTrigger} ><img src={HERO_TEXT_PATH({page: page -1, landingSubPage})} style={{height: '100%'}} /></HeroTextNormalOut>
             )}
-			<HeroTextNormalIn shouldTrigger={shouldTrigger} onTransitionEnd={() => setHideNormal(true)}><img src={`/assets/hero_text/page_${page}.png`} style={{height: '100%'}} /></HeroTextNormalIn>
+			<HeroTextNormalIn shouldTrigger={shouldTrigger} onTransitionEnd={() => setHideNormal(true)}><img src={HERO_TEXT_PATH({page, landingSubPage})} style={{height: '100%'}} /></HeroTextNormalIn>
         </>
     )
     if(!hideReverse) return (
         <>
-			<HeroTextReverseIn shouldTrigger={shouldReverse} onTransitionEnd={() => setHideReverse(true)}><img src={`/assets/hero_text/page_${page}.png`} style={{height: '100%'}}/></HeroTextReverseIn>
+			<HeroTextReverseIn shouldTrigger={shouldReverse} onTransitionEnd={() => setHideReverse(true)}><img src={HERO_TEXT_PATH({page, landingSubPage})} style={{height: '100%'}}/></HeroTextReverseIn>
 			{
 				page === MAX_PAGE ? null : (
-					<HeroTextReverseOut shouldTrigger={shouldReverse}><img src={`/assets/hero_text/page_${page+1}.png`} style={{height: '100%'}}/></HeroTextReverseOut>
+					<HeroTextReverseOut shouldTrigger={shouldReverse}><img src={HERO_TEXT_PATH({page: page + 1, landingSubPage})} style={{height: '100%'}}/></HeroTextReverseOut>
 				)
 			}
         </>
     )
-    if(hideNormal && hideReverse) return (<HeroText><img src={`/assets/hero_text/page_${page}.png`} style={{height: '100%'}}/></HeroText>)
+    if(hideNormal && hideReverse) return (<HeroText><img src={HERO_TEXT_PATH({page, landingSubPage})} style={{height: '100%'}}/></HeroText>)
 }
 
 export default HeroTextSection

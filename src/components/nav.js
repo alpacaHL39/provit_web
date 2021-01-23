@@ -44,20 +44,36 @@ const SocialLogo = styled.div`
 	height: 1.55vw;
 `
 
-const PAGE_INFO = [
-	{name: 'landingPage', label: 'DOCUMENTRY'},
-	// {name: 'videoPage', label: 'MUSIC VIDEOS'},
-	{name: 'aboutUsPage', label: 'WHO ARE WE'},
-	{name: 'contactUsPage', label: 'GET IN TOUCH'},
+// only for link list item, not related to scroll to scroll to tab
+const SUBPAGE_INFO = [
+	{name: 'commercial', label: 'commercial'},
+	{name: 'documentary', label: 'documentary'},
+	{name: 'farce', label: 'farce'},
+	{name: 'music_video', label: 'music video'},
+	{name: 'the_incredibles', label: 'the incredibles'},
 ]
 
-const NavSection = ({scrollToFunc, scrollPosition}) => {
+const NavSection = ({scrollToFunc, scrollPosition, landingSubPage, setLandingSubPage}) => {
 	const [activePage, setActivePage] = useState('landingPage')
 
 	useEffect(() => {
+		// index only would be 0,1,2
 		const currentClientVH = window.innerHeight
 		const index = Math.round(scrollPosition / currentClientVH)
-		if(PAGE_INFO[index].name !== activePage) setActivePage(PAGE_INFO[index].name)
+		switch (index) {
+			case 0:
+				setActivePage('landingPage');
+				break;
+			case 1:
+				setActivePage('aboutUsPage')
+				break
+			case 2:
+				setActivePage('contactUsPage')
+				break
+			default:
+				setActivePage('landingPage');
+		}
+		// if(PAGE_INFO[index].name !== activePage) setActivePage(PAGE_INFO[index].name)
 	}, [scrollPosition])
 	
     const onPress = (pageName) => {
@@ -69,15 +85,16 @@ const NavSection = ({scrollToFunc, scrollPosition}) => {
         <Nav>
             <Logo><img src='/assets/icons/logo.svg' style={{height: '100%'}} /></Logo>
             <Links>
-				{PAGE_INFO.map(({name, label}) => (<LinkItems active={activePage === name} onClick={() => onPress(name)}>{label}</LinkItems>))}
+				{/* {PAGE_INFO.map(({name, label}) => (<LinkItems active={activePage === name} onClick={() => onPress(name)}>{label.toUpperCase()}</LinkItems>))} */}
                 {/* <LinkItems active={activePage === 'landingPage'} onClick={() => onPress('landingPage')}>DOCUMENTRY</LinkItems>
-                <LinkItems active={activePage === 'videoPage'} onClick={() => onPress('videoPage')}>MUSIC VIDEOS</LinkItems>
+                <LinkItems active={activePage === 'videoPage'} onClick={() => onPress('videoPage')}>MUSIC VIDEOS</LinkItems> */}
+				{SUBPAGE_INFO.map(({name, label}) => (<LinkItems active={activePage === 'landingPage' && landingSubPage === name} onClick={() => {onPress('landingPage'); setLandingSubPage(name)}}>{label.toUpperCase()}</LinkItems>))}
                 <LinkItems active={activePage === 'aboutUsPage'} onClick={() => onPress('aboutUsPage')}>WHO ARE WE</LinkItems>
-                <LinkItems active={activePage === 'contactUsPage'} onClick={() => onPress('contactUsPage')}>GET IN TOUCH</LinkItems> */}
+                <LinkItems active={activePage === 'contactUsPage'} onClick={() => onPress('contactUsPage')}>GET IN TOUCH</LinkItems>
             </Links>
             <SocialLogo>
-                <img src='/assets/icons/ig.svg' style={{height: '100%'}} />
-                <img src='/assets/icons/fb.svg' style={{height: '100%'}} />
+				<a href="https://www.instagram.com/provit_hk/" target="_blank"><img src='/assets/icons/ig.svg' style={{height: '100%'}} /></a>
+				<a href="https://www.facebook.com/PROVITHK/" target="_blank"><img src='/assets/icons/fb.svg' style={{height: '100%'}} /></a>
             </SocialLogo>
         </Nav>
     )

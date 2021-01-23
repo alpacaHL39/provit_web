@@ -109,7 +109,8 @@ const PlayVideo = styled.video.attrs(() => ({autoPlay: false, loop: true, muted:
 	`}
 `
 
-const PlayItemBackground = styled.img.attrs(({page}) => ({src: `/assets/gifs/page_${page}.jpg`}))`
+// const PlayItemBackground = styled.img.attrs(({page}) => ({src: `/assets/gifs/page_${page}.jpg`}))`
+const PlayItemBackground = styled.img.attrs(({page, landingSubPage}) => ({src: `/assets/landing_sub_page/${landingSubPage}/video/page_${page}.jpg`}))`
 	height: 100%;
 	width: 100%;
 	position: absolute;
@@ -125,17 +126,20 @@ const PlayItemBackground = styled.img.attrs(({page}) => ({src: `/assets/gifs/pag
 	`}
 `
 
-const PlayerContent = ({page, isReverse, shouldTrigger}) => (
+const PlayerContent = ({page, isReverse, shouldTrigger, landingSubPage}) => (
 <PlayerItem page={page} currentPage={page+1} isReverse={isReverse} shouldTrigger={shouldTrigger}>
-	<PlayVideo page={page}>
-		<source src={`/assets/gifs/page_${page}.mp4`} type="video/mp4" />
+	{/* to rerender the subpage player item we need to add key prop on video elem */}
+	<PlayVideo page={page} key={Math.random()}>
+		{/* <source src={`/assets/gifs/page_${page}.mp4`} type="video/mp4" /> */}
+		<source src={`/assets/landing_sub_page/${landingSubPage}/video/page_${page}.mp4`} type="video/mp4" />
 	</PlayVideo>
 	<PlayButton />
 </PlayerItem>)
 
-const PlayerSection = ({hideNormal, hideReverse, page, shouldReverse, shouldTrigger, MAX_PAGE}) => {
+const PlayerSection = ({hideNormal, hideReverse, page, shouldReverse, shouldTrigger, MAX_PAGE, landingSubPage, SUB_PAGE_URL}) => {
 	const [modalOpen, handleModalOpen] = useState(false)
 	const mp4Player = useRef(null)
+	const [subpage] = useState(landingSubPage)
 
 	useEffect(()=>{
 		let timer;
@@ -146,6 +150,16 @@ const PlayerSection = ({hideNormal, hideReverse, page, shouldReverse, shouldTrig
 		}
 		return () => clearTimeout(timer)
 	}, [hideNormal, hideReverse])
+
+	useEffect(() => {
+		let timer;
+		if(landingSubPage !== subpage && mp4Player.current !== null) {
+			timer = setTimeout(() => {
+				mp4Player.current.play()
+			}, 800);
+		}
+		return () => clearTimeout(timer)
+	}, [landingSubPage])
 
 	useEffect(() => {
 		if(mp4Player.current !== null) {
@@ -168,11 +182,11 @@ const PlayerSection = ({hideNormal, hideReverse, page, shouldReverse, shouldTrig
             {
                 !hideNormal && (
                     <Player shouldTrigger={shouldTrigger} isNormal={true}>
-						<PlayerContent isReverse={true} />
+						<PlayerContent isReverse={true} landingSubPage={landingSubPage}/>
 						{/* {page === 1 ? (<PlayerContent isReverse={true}/>) : (<PlayerContent page={page - 1} shouldTrigger={shouldTrigger} />)} */}
-                        <PlayerContent page={page} />
+                        <PlayerContent page={page} landingSubPage={landingSubPage}/>
 						{page === MAX_PAGE ? null : (
-							<PlayerContent page={page + 1}/>
+							<PlayerContent page={page + 1} landingSubPage={landingSubPage}/>
 						)}
                     </Player>
                 )
@@ -180,20 +194,20 @@ const PlayerSection = ({hideNormal, hideReverse, page, shouldReverse, shouldTrig
             {
                 hideNormal && hideReverse && (
                     <Player isNormal={true}>
-						<Dialog onClose={() => handleModalOpen(false)} aria-labelledby="simple-dialog-title" open={modalOpen}>
-							<video controls autoplay>
-								<source src={`/assets/gifs/page_${page}.mp4`} type="video/mp4"/>
-							</video>
+						<Dialog onClose={() => handleModalOpen(false)} aria-labelledby="simple-dialog-title" open={modalOpen} maxWidth='lg'>
+							<iframe width="1080" height="720" src={`https://www.youtube-nocookie.com/embed/${SUB_PAGE_URL[page - 1]}?autoplay=1&vq=hd1080`} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 						</Dialog>
 						<PlayerItem page={page} currentPage={page} onMouseOver={handlePause} onMouseLeave={handlePlay}>
-							<PlayVideo isActivePlayer={true} page={page} ref={mp4Player}>
-								<source src={`/assets/gifs/page_${page}.mp4`} type="video/mp4" />
+							{/* to rerender the subpage player item we need to add key prop on video elem */}
+							<PlayVideo isActivePlayer={true} page={page} ref={mp4Player} key={Math.random()}>
+								{/* <source src={`/assets/gifs/page_${page}.mp4`} type="video/mp4" /> */}
+								<source src={`/assets/landing_sub_page/${landingSubPage}/video/page_${page}.mp4`} type="video/mp4" />
 							</PlayVideo>
-							<PlayItemBackground page={page} isActivePlayer={true}/>
+							<PlayItemBackground page={page} isActivePlayer={true} landingSubPage={landingSubPage}/>
 							<PlayButton onClick={() => handleModalOpen(true)}/>
 						</PlayerItem>
 						{page === MAX_PAGE ? null : (
-							<PlayerContent page={page + 1}/>
+							<PlayerContent page={page + 1} landingSubPage={landingSubPage}/>
 						)}
                     </Player>
                 )
@@ -201,9 +215,9 @@ const PlayerSection = ({hideNormal, hideReverse, page, shouldReverse, shouldTrig
             {
                 !hideReverse && (
                     <Player shouldReverse={shouldReverse}>
-						<PlayerContent page={page} isReverse={true}/>
+						<PlayerContent page={page} isReverse={true} landingSubPage={landingSubPage}/>
 						{page === MAX_PAGE ? null : (
-							<PlayerContent page={page + 1}/>
+							<PlayerContent page={page + 1} landingSubPage={landingSubPage}/>
 						)}
                     </Player>
                 )
@@ -213,7 +227,8 @@ const PlayerSection = ({hideNormal, hideReverse, page, shouldReverse, shouldTrig
             !hideNormal && page !== 1 && (
 			<PlayerFadeOutItem page={page} shouldTrigger={shouldTrigger}>
 				<PlayVideo page={page - 1}>
-					<source src={`/assets/gifs/page_${page - 1}.mp4`} type="video/mp4" />
+					{/* <source src={`/assets/gifs/page_${page - 1}.mp4`} type="video/mp4" /> */}
+					<source src={`/assets/landing_sub_page/${landingSubPage}/video/page_${page - 1}.mp4`} type="video/mp4" />
 				</PlayVideo>
 				<PlayButton />
 			</PlayerFadeOutItem>)
@@ -222,7 +237,8 @@ const PlayerSection = ({hideNormal, hideReverse, page, shouldReverse, shouldTrig
             !hideReverse && (
 			<PlayerFadeInItem page={page} shouldReverse={shouldReverse}>
 				<PlayVideo page={page}>
-					<source src={`/assets/gifs/page_${page}.mp4`} type="video/mp4" />
+					{/* <source src={`/assets/gifs/page_${page}.mp4`} type="video/mp4" /> */}
+					<source src={`/assets/landing_sub_page/${landingSubPage}/video/page_${page}.mp4`} type="video/mp4" />
 				</PlayVideo>
 				<PlayButton />
 			</PlayerFadeInItem>)

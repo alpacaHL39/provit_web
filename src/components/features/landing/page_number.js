@@ -1,7 +1,7 @@
 import styled, {css} from 'styled-components';
 
 // const pageColor = ['Aquamarine',  'thistle', 'gold']
-const pageColor = ['#3CDCB5', '#FF8AE1', '#FFD764', '#B296CC','#006584']
+// const pageColor = ['#3CDCB5', '#FF8AE1', '#FFD764', '#B296CC','#006584']
 
 const PageNumber = styled.div`
 	position: absolute;
@@ -28,7 +28,7 @@ const PageNumberFirstBatch = styled.div`
 
 const PageNumberItem = styled.div`
 	font-family: 'Montserrat';
-	${({page, currentPage}) => 
+	${({page, currentPage, pageColor}) => 
 		page === currentPage
 			? css`
 				// width: 37px;
@@ -49,7 +49,7 @@ const PageNumberItem = styled.div`
 const PageNumberPrev = styled.div`
 	font-family: 'Montserrat';
 	${({isReverted}) => isReverted && css`color: white; font-size: 1.3vw; font-weight: 400;`}
-	${({shouldTrigger, currentPage, shouldReverse}) => {
+	${({shouldTrigger, currentPage, shouldReverse, pageColor}) => {
 		if(shouldTrigger !== undefined){
 			return !shouldTrigger
 				? css`
@@ -83,9 +83,9 @@ const PageNumberPrev = styled.div`
 
 const PageNumberCurr = styled.div`
 	font-family: 'Montserrat';
-	${({isReverted, currentPage}) => isReverted && css`color: ${pageColor[currentPage -1]}; font-size: 1.8vw; font-weight: 700;`}
+	${({isReverted, currentPage, pageColor}) => isReverted && css`color: ${pageColor[currentPage -1]}; font-size: 1.8vw; font-weight: 700;`}
 
-	${({shouldTrigger, currentPage, shouldReverse}) => {
+	${({shouldTrigger, currentPage, shouldReverse, pageColor}) => {
 		if(shouldTrigger !== undefined){
 			return shouldTrigger
 				? css`
@@ -154,7 +154,7 @@ const PageNumberBridgeItem = styled.div`
 
 const pageNumberHelper = (pageNumber) => pageNumber < 10 ? `0${pageNumber}` : pageNumber
 
-const PageNumberSection = ({hideNormal, hideReverse, page, shouldReverse, shouldTrigger, IS_DEV, MAX_PAGE}) => (
+const PageNumberSection = ({hideNormal, hideReverse, page, shouldReverse, shouldTrigger, IS_DEV, MAX_PAGE, COLOR_CODE}) => (
     <PageNumber>
         <div style={{width: '38%', overflow: 'hidden', display: 'flex', alignItems: 'center'}}>
             {
@@ -162,16 +162,16 @@ const PageNumberSection = ({hideNormal, hideReverse, page, shouldReverse, should
                     <PageNumberFirstBatch IS_DEV={IS_DEV} shouldTrigger={shouldTrigger && page !== MAX_PAGE}>
 						{page === MAX_PAGE ? (
 							<>
-								<PageNumberItem page={page} currentPage={page - 1}>{pageNumberHelper(page - 1)}</PageNumberItem>
+								<PageNumberItem page={page} currentPage={page - 1} pageColor={COLOR_CODE}>{pageNumberHelper(page - 1)}</PageNumberItem>
 								<PageNumberConn shouldExtend={true}/>
 							</>
 						) : (
 							<>
-								<PageNumberPrev shouldTrigger={shouldTrigger} currentPage={page - 1} hideThisItem={page - 1 < 1 }>{pageNumberHelper(page -1)}</PageNumberPrev>
+								<PageNumberPrev shouldTrigger={shouldTrigger} currentPage={page - 1} hideThisItem={page - 1 < 1 } pageColor={COLOR_CODE}>{pageNumberHelper(page -1)}</PageNumberPrev>
 								<PageNumberConn hideThisItem={page - 1 < 1}/>
-								<PageNumberCurr shouldTrigger={shouldTrigger} currentPage={page}>{pageNumberHelper(page)}</PageNumberCurr>
+								<PageNumberCurr shouldTrigger={shouldTrigger} currentPage={page} pageColor={COLOR_CODE}>{pageNumberHelper(page)}</PageNumberCurr>
 								<PageNumberConn shouldExtend={page >= MAX_PAGE-1}/>
-								{!(page >= MAX_PAGE-1) ? (<PageNumberItem page={page} currentPage={page + 1}>{pageNumberHelper(page + 1)}</PageNumberItem>) : null}
+								{!(page >= MAX_PAGE-1) ? (<PageNumberItem page={page} currentPage={page + 1} pageColor={COLOR_CODE}>{pageNumberHelper(page + 1)}</PageNumberItem>) : null}
 							</>
 						)}
                     </PageNumberFirstBatch>
@@ -182,12 +182,12 @@ const PageNumberSection = ({hideNormal, hideReverse, page, shouldReverse, should
                     <PageNumberFirstBatch IS_DEV={IS_DEV} page={page}>
 						{page === MAX_PAGE ? (
 							<>
-								<PageNumberItem page={page} currentPage={page - 1}>{pageNumberHelper(page - 1)}</PageNumberItem>
+								<PageNumberItem page={page} currentPage={page - 1} pageColor={COLOR_CODE}>{pageNumberHelper(page - 1)}</PageNumberItem>
 								<PageNumberConn shouldExtend={true}/>
 							</>
 						) : (
 							<>
-								<PageNumberItem page={page} currentPage={page}>{pageNumberHelper(page)}</PageNumberItem>
+								<PageNumberItem page={page} currentPage={page} pageColor={COLOR_CODE}>{pageNumberHelper(page)}</PageNumberItem>
 								<PageNumberConn shouldExtend={page === MAX_PAGE - 1}/>
 								{!(page >= MAX_PAGE -1) && (<PageNumberItem page={page} currentPage={page + 1}>{pageNumberHelper(page + 1)}</PageNumberItem>)}
 							</>
@@ -202,21 +202,21 @@ const PageNumberSection = ({hideNormal, hideReverse, page, shouldReverse, should
 							<>
 								{page === MAX_PAGE ? (
 								<>
-									<PageNumberItem page={page} currentPage={page - 1}>{pageNumberHelper(page - 1)}</PageNumberItem>
+									<PageNumberItem page={page} currentPage={page - 1} pageColor={COLOR_CODE}>{pageNumberHelper(page - 1)}</PageNumberItem>
 									<PageNumberConn shouldExtend={true}/>
 								</>) : (
 								<>
-									<PageNumberItem page={page} currentPage={page}>{pageNumberHelper(page)}</PageNumberItem>
+									<PageNumberItem page={page} currentPage={page} pageColor={COLOR_CODE}>{pageNumberHelper(page)}</PageNumberItem>
 									<PageNumberConn shouldExtend={true}/>
 								</>)}
 							</>
 						) : (
 							<>
-								<PageNumberPrev shouldReverse={shouldReverse} currentPage={page} isReverted={true}>{pageNumberHelper(page)}</PageNumberPrev>
+								<PageNumberPrev shouldReverse={shouldReverse} currentPage={page} isReverted={true} pageColor={COLOR_CODE}>{pageNumberHelper(page)}</PageNumberPrev>
 								<PageNumberConn  shouldReverse={shouldReverse} />
-								<PageNumberCurr shouldReverse={shouldReverse} currentPage={page + 1} isReverted={true}>{pageNumberHelper(page + 1)}</PageNumberCurr>
+								<PageNumberCurr shouldReverse={shouldReverse} currentPage={page + 1} isReverted={true} pageColor={COLOR_CODE}>{pageNumberHelper(page + 1)}</PageNumberCurr>
 								<PageNumberConn shouldExtend={page >= MAX_PAGE -2}/>
-								{!(page >= MAX_PAGE-2) ? (<PageNumberItem page={page} currentPage={page + 2}>{pageNumberHelper(page + 2)}</PageNumberItem>) : null}
+								{!(page >= MAX_PAGE-2) ? (<PageNumberItem page={page} currentPage={page + 2} pageColor={COLOR_CODE}>{pageNumberHelper(page + 2)}</PageNumberItem>) : null}
 							</>
 						)}
                     </PageNumberFirstBatch>
@@ -241,7 +241,7 @@ const PageNumberSection = ({hideNormal, hideReverse, page, shouldReverse, should
 			}
         </PageNumberBridge>
         <PageNumberLastBatch IS_DEV={IS_DEV}>
-			<PageNumberItem page={page} currentPage={MAX_PAGE} shouldTrigger={shouldTrigger}>{pageNumberHelper(MAX_PAGE)}</PageNumberItem>
+			<PageNumberItem page={page} currentPage={MAX_PAGE} shouldTrigger={shouldTrigger} pageColor={COLOR_CODE}>{pageNumberHelper(MAX_PAGE)}</PageNumberItem>
         </PageNumberLastBatch>
     </PageNumber>
 )
