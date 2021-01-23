@@ -129,7 +129,7 @@ const PlayItemBackground = styled.img.attrs(({page, landingSubPage}) => ({src: `
 const PlayerContent = ({page, isReverse, shouldTrigger, landingSubPage}) => (
 <PlayerItem page={page} currentPage={page+1} isReverse={isReverse} shouldTrigger={shouldTrigger}>
 	{/* to rerender the subpage player item we need to add key prop on video elem */}
-	<PlayVideo page={page} key={Math.random()}>
+	<PlayVideo page={page} key={landingSubPage}>
 		{/* <source src={`/assets/gifs/page_${page}.mp4`} type="video/mp4" /> */}
 		<source src={`/assets/landing_sub_page/${landingSubPage}/video/page_${page}.mp4`} type="video/mp4" />
 	</PlayVideo>
@@ -199,7 +199,7 @@ const PlayerSection = ({hideNormal, hideReverse, page, shouldReverse, shouldTrig
 						</Dialog>
 						<PlayerItem page={page} currentPage={page} onMouseOver={handlePause} onMouseLeave={handlePlay}>
 							{/* to rerender the subpage player item we need to add key prop on video elem */}
-							<PlayVideo isActivePlayer={true} page={page} ref={mp4Player} key={Math.random()}>
+							<PlayVideo isActivePlayer={true} page={page} ref={mp4Player} key={landingSubPage}>
 								{/* <source src={`/assets/gifs/page_${page}.mp4`} type="video/mp4" /> */}
 								<source src={`/assets/landing_sub_page/${landingSubPage}/video/page_${page}.mp4`} type="video/mp4" />
 							</PlayVideo>
