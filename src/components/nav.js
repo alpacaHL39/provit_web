@@ -93,7 +93,7 @@ const NavSection = ({scrollToFunc, scrollPosition, landingSubPage, setLandingSub
 					{/* <LinkItems active={activePage === 'landingPage'} onClick={() => onPress('landingPage')}>DOCUMENTRY</LinkItems>
 					<LinkItems active={activePage === 'videoPage'} onClick={() => onPress('videoPage')}>MUSIC VIDEOS</LinkItems> */}
 					{SUBPAGE_INFO.map(({name, label}) => (<LinkItems active={activePage === 'landingPage' && landingSubPage === name} onClick={() => {onPress('landingPage'); setLandingSubPage(name)}}>{label.toUpperCase()}</LinkItems>))}
-					<LinkItems active={activePage === 'aboutUsPage'} onClick={() => onPress('aboutUsPage')}>WHO ARE WE</LinkItems>
+					<LinkItems active={activePage === 'aboutUsPage'} onClick={() => onPress('aboutUsPage')}>WHO WE ARE</LinkItems>
 					<LinkItems active={activePage === 'contactUsPage'} onClick={() => onPress('contactUsPage')}>GET IN TOUCH</LinkItems>
             	</Links>
 			</div>
