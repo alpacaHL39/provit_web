@@ -149,9 +149,26 @@ const ContactUsSection = () => {
         }))
     }
 
-    const handleOnSubmit = (e) => {
+    const handleOnSubmit = async (e) => {
         e.preventDefault()
-        setOpen(true)
+        const config = {
+            service_id: 'service_9y2p5l6',
+            template_id: 'template_e07l8iw',
+            user_id: 'user_PsJcwLYWoSwHcM2IfyaRM',
+            template_params: {
+                'user_name': data.name,
+                'user_email': data.email,
+                'message': data.message
+            }
+        }
+        await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(config),
+        }).then(() => setOpen(true)).catch((err) => console.log(err.message))
     }
 
     const handleClose = () => (event, reason) => {
@@ -201,7 +218,7 @@ const ContactUsSection = () => {
             {/* <div style={{color: 'white', fontSize: '3em'}}>{JSON.stringify(open)}</div> */}
             <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
                 <Alert onClose={() => setOpen(false)} severity="success">
-                    {JSON.stringify(data)}
+                    Message Sent
                 </Alert>
             </Snackbar>
         </ThemeProvider>
