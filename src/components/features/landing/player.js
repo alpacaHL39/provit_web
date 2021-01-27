@@ -8,7 +8,8 @@ const Player = styled.div`
 	height: 100%;
 	transform: translateX(${({isNormal}) => isNormal ? 0 : '-25.884vw'});
 	${({shouldTrigger, shouldReverse}) => {
-		if(shouldTrigger) return css`transform: translateX(-25.5vw);`
+		if(shouldTrigger) return css`transform: translateX(-24.5vw);`
+		// if(shouldTrigger) return css`transform: translateX(-25.5vw);`
 		if(shouldReverse) return css`transform: translateX(0);`
 	}}
 	// tranform: translateX(${({shouldTrigger, shouldReverse}) => (shouldTrigger || shouldReverse ) && 0}px);
