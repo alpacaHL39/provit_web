@@ -51,9 +51,9 @@ const SocialLogo = styled.div`
 const SUBPAGE_INFO = [
 	{name: 'the_incredibles', label: 'the incredibles'},
 	{name: 'music_video', label: 'music video'},
-	{name: 'farce', label: 'farce'},
 	{name: 'commercial', label: 'commercial'},
 	{name: 'documentary', label: 'documentary'},
+	{name: 'farce', label: 'farce'},
 ]
 
 const NavSection = ({scrollToFunc, scrollPosition, landingSubPage, setLandingSubPage}) => {
