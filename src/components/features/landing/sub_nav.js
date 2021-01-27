@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const FakeNav = styled.div`
-    width: 12.5%;
+    width: 16%;
 `
 
 const NavShadow = styled.div.attrs(({scrollPosition}) => ({style: {transform: `translateX(-${(Number(scrollPosition) * 1.5 / 1080 * 100)}%`}}))`

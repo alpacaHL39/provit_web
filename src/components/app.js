@@ -23,7 +23,8 @@ const Main = styled.div`
 `
 
 const Content = styled.div`
-	width: 87.5%;
+	width: 84%;
+	// width: 87.5%;
 	height: 300vh;
 `
 
@@ -34,6 +35,7 @@ const Landing = styled.div`
 	background-image: url('/assets/landing_sub_page/${props => props.landingSubPage}/bg/page_${props => props.page}.jpg');
 	// background-image: url('/assets/img/page_${props => props.page}.jpg');
 	background-size: cover;
+	background-position: center right;
 	transition: background-image 0.3s ease-in-out;
 `
 
@@ -80,7 +82,7 @@ const App = () => {
 	const [shouldReverse, setShouldReverse] = useState(false)
 	const [hideNormal, setHideNormal] = useState(false)
 	const [hideReverse, setHideReverse] = useState(true)
-	const [landingSubPage, setLandingSubPage] = useState('commercial')
+	const [landingSubPage, setLandingSubPage] = useState('the_incredibles')
 	const CURRENT_DATA_INFO = DATA.data.filter(item => item.pageName === landingSubPage)[0].items
 	const MAX_PAGE = CURRENT_DATA_INFO.length
 	const COLOR_CODE = CURRENT_DATA_INFO.map(item => item.colorCode)

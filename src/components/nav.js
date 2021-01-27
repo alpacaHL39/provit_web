@@ -2,7 +2,8 @@ import { useState, useEffect } from 'preact/hooks';
 import styled from 'styled-components';
 
 const Nav = styled.div`
-	width: 12.5%;
+	width: 16%;
+	// width: 12.5%;
 	background-color: black;
 	display: flex;
 	flex-direction: column;
@@ -12,6 +13,7 @@ const Nav = styled.div`
 	position: fixed;
 	top: 0;
 	left:0;
+	margin-right: 41px;
 `
 
 const Logo = styled.div`
@@ -33,24 +35,25 @@ const LinkItems = styled.p`
 	font-family: 'Avenir';
     font-weight: ${props => props.active ? 700 : 400};
     cursor: pointer;
-    transition: 0.5s;
+	transition: 0.5s;
+	padding-bottom: 40px;
 `
 
 const SocialLogo = styled.div`
 	margin-bottom: 50%;
 	display: flex;
 	justify-content: space-between;
-	width: 65%;
+	width: 50%;
 	height: 1.55vw;
 `
 
 // only for link list item, not related to scroll to scroll to tab
 const SUBPAGE_INFO = [
+	{name: 'the_incredibles', label: 'the incredibles'},
+	{name: 'music_video', label: 'music video'},
+	{name: 'farce', label: 'farce'},
 	{name: 'commercial', label: 'commercial'},
 	{name: 'documentary', label: 'documentary'},
-	{name: 'farce', label: 'farce'},
-	{name: 'music_video', label: 'music video'},
-	{name: 'the_incredibles', label: 'the incredibles'},
 ]
 
 const NavSection = ({scrollToFunc, scrollPosition, landingSubPage, setLandingSubPage}) => {
@@ -84,14 +87,16 @@ const NavSection = ({scrollToFunc, scrollPosition, landingSubPage, setLandingSub
     return (
         <Nav>
             <Logo><img src='/assets/icons/logo.svg' style={{height: '100%'}} /></Logo>
-            <Links>
-				{/* {PAGE_INFO.map(({name, label}) => (<LinkItems active={activePage === name} onClick={() => onPress(name)}>{label.toUpperCase()}</LinkItems>))} */}
-                {/* <LinkItems active={activePage === 'landingPage'} onClick={() => onPress('landingPage')}>DOCUMENTRY</LinkItems>
-                <LinkItems active={activePage === 'videoPage'} onClick={() => onPress('videoPage')}>MUSIC VIDEOS</LinkItems> */}
-				{SUBPAGE_INFO.map(({name, label}) => (<LinkItems active={activePage === 'landingPage' && landingSubPage === name} onClick={() => {onPress('landingPage'); setLandingSubPage(name)}}>{label.toUpperCase()}</LinkItems>))}
-                <LinkItems active={activePage === 'aboutUsPage'} onClick={() => onPress('aboutUsPage')}>WHO ARE WE</LinkItems>
-                <LinkItems active={activePage === 'contactUsPage'} onClick={() => onPress('contactUsPage')}>GET IN TOUCH</LinkItems>
-            </Links>
+			<div>
+				<Links>
+					{/* {PAGE_INFO.map(({name, label}) => (<LinkItems active={activePage === name} onClick={() => onPress(name)}>{label.toUpperCase()}</LinkItems>))} */}
+					{/* <LinkItems active={activePage === 'landingPage'} onClick={() => onPress('landingPage')}>DOCUMENTRY</LinkItems>
+					<LinkItems active={activePage === 'videoPage'} onClick={() => onPress('videoPage')}>MUSIC VIDEOS</LinkItems> */}
+					{SUBPAGE_INFO.map(({name, label}) => (<LinkItems active={activePage === 'landingPage' && landingSubPage === name} onClick={() => {onPress('landingPage'); setLandingSubPage(name)}}>{label.toUpperCase()}</LinkItems>))}
+					<LinkItems active={activePage === 'aboutUsPage'} onClick={() => onPress('aboutUsPage')}>WHO ARE WE</LinkItems>
+					<LinkItems active={activePage === 'contactUsPage'} onClick={() => onPress('contactUsPage')}>GET IN TOUCH</LinkItems>
+            	</Links>
+			</div>
             <SocialLogo>
 				<a href="https://www.instagram.com/provit_hk/" target="_blank"><img src='/assets/icons/ig.svg' style={{height: '100%'}} /></a>
 				<a href="https://www.facebook.com/PROVITHK/" target="_blank"><img src='/assets/icons/fb.svg' style={{height: '100%'}} /></a>
